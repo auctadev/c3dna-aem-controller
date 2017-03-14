@@ -1,0 +1,61 @@
+---
+name: C3DNA Controller Component For AEM Customers
+shortDescription: Application lifecycle management
+public: false
+author: C3DNA
+organization: C3DNA
+defaultPlaybook: playbook.yml
+imagePath: https://raw.github.com/clc-runner/Assets/master/c3dna.png
+description: C3DNA Controller
+
+fields:
+- displayName: Datacenter
+  name: dc
+  required: true
+  type: datacenters
+- displayName: Network
+  name: network_id
+  parent: dc
+  required: true
+  type: networks
+- displayName: Group
+  name: group
+  parent: dc
+  required: true
+  type: groups
+- displayName: Server Name
+  name: server_name
+  required: true
+  default: C3DC
+  type: text
+- displayName: V1 API Key
+  name: api_key
+  required: true
+  type: text
+  default: 56a8e3122ec24d4d8c4a3f6d66bcbf7c
+- displayName: V1 API Password
+  name: api_pass
+  required: true
+  type: text
+  default: yh=h)~$2r_t_7KBV
+- displayName: CenturyLink Cloud Username
+  name: API_V2_USER
+  required: true
+  type: text
+  default: test.eco
+- displayName: CenturyLink Cloud Password
+  name: API_V2_PASSWORD
+  type: text
+  required: true
+  default: '#0mbH)CJh:D.qv2W'
+- displayName: Root password for servers
+  name: root_password
+  type: password
+  required: true
+  default: cccDNA2013!
+  helpText: enter a strong password, a weak one will cause the server build to fail
+# - displayName: Unique Controller name
+#   name: UUID
+#   type: text
+#   required: true
+#   default: C3DNA_CONTROLLER_MAIN_APPLICATION
