@@ -2,7 +2,7 @@
 - name: infrastructure
   hosts: localhost
   vars:
-    srv_template: UBUNTU-14-64-TEMPLATE
+    srv_template: BOSH-OPENSTACK-CLC-UBUNTU-TRUSTY-GO_AGENT_3062
     srv_disks:
     - { sizeGB: 15, type: raw }
     srv_mem: "{{ mem | d(8) }}"
