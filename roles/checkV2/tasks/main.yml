@@ -1,16 +1,16 @@
 - name: download apiv2
   get_url:
-    url: https://github.com/ack/clc-bin/releases/download/v2/apiv2.linux
+    url: https://github.com/ack/clc-bin/releases/download/v1/apiv2.linux
     dest: /tmp/apiv2
     mode: 0755
 - name: post body
   copy: content="{{ body | to_json }}" dest="/tmp/payload.json"
 - debug:
     msg: "Sending login request with the following body: {{ body | to_json }}"
-- block:
-      - name: check credential
+- name: login apiv2
         raw: /tmp/apiv2 -endpoint https://api.ctl.io/v2/authentication/login
-           -method POST -key '{{api_key}}' -pass '{{api_pass}}' < /tmp/payload.json
+           -method POST -user '{{api_key}}' -pass '{{api_pass}}' < /tmp/payload.json
         register: apicall
-  rescue:
-    - fail: msg="Credentials for API v2 are not correct. Please provide correct credentials and execute the job again"
+- name: check response
+  fail: msg="Credentials for API v2 are not correct. Please provide correct credentials and execute the job again"
+  when: apicall.status_code != "200"
