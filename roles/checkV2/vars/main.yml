@@ -1,0 +1,5 @@
+---
+alias: "{{ lookup('env', 'CLC_ACCT_ALIAS') }}"
+body:
+  Username: "{{ API_V2_USER }}"
+  Password: "{{ API_V2_PASSWORD }}"
