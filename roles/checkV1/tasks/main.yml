@@ -6,7 +6,7 @@
 - name: post body
   copy: content="{{ body | to_json }}" dest="/tmp/payload.json"
 - debug:
-    msg: "Sending login request with the following body: {{ body | to_json }}"
+    msg: "Sending API V1 login request with the following body: {{ body | to_json }}"
 - block:
       - name: check credential
         raw: /tmp/apiv1 -endpoint https://api.ctl.io/REST/Auth/Logon/
