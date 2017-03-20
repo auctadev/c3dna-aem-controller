@@ -1,5 +1,5 @@
 - name: Create logical partition
-  command: echo -e "n\np\n3\n83884032\nt\n3\n8e\nw" | sudo fdisk /dev/sda
+  command: echo -e "n\np\n3\n83884032\n\nt\n3\n8e\nw" | sudo fdisk /dev/sda
   async: 0
   poll: 0
   ignore_errors: false
