@@ -1,0 +1,25 @@
+- name: Create logical partition
+  command: echo -e "n\np\n3\n83884032\nt\n3\n8e\nw" | sudo fdisk /dev/sda
+  async: 0
+  poll: 0
+  ignore_errors: false
+- name: Restart server
+  command: /sbin/shutdown -r +1
+  async: 0
+  poll: 0
+  ignore_errors: false
+- name: Create physical volume
+  command: sudo pvcreate /dev/sda3
+  async: 0
+  poll: 0
+  ignore_errors: false
+- name: Extend physical volume
+  command: sudo lvextend -L+160G /dev/C3D-SCP-vg/root
+  async: 0
+  poll: 0
+  ignore_errors: false
+- name: Resize partition
+  command: sudo resize2fs -p /dev/C3D-SCP-vg/root
+  async: 0
+  poll: 0
+  ignore_errors: false
