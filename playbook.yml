@@ -69,6 +69,11 @@
         body_format: json
         status_code: 200,202,204
 
+- name: Resize Disk
+  hosts: localhost
+  roles:
+  - role: resizedisk
+
 - name: load configuration
   hosts: servers
   roles:
