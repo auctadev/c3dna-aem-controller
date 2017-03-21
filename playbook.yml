@@ -76,11 +76,12 @@
   roles:
   - role: resizedisk
 
-- name: Wait server reboot
-  local_action:
-    wait_for host={{ ansible_ssh_host }}
-    state=started port=22 delay=30
-    timeout=300 connect_timeout=15
+- wait_for:
+    host: "{{ ansible_ssh_host }}"
+    port: 22
+    delay: 30
+    timeout: 300
+    connect_timeout: 15
 
 - name: Resize Disk Step 2
   hosts: servers
