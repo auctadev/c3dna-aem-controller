@@ -70,7 +70,7 @@
         status_code: 200,202,204
 
 - name: Resize Disk
-  hosts: localhost
+  hosts: servers
   roles:
   - role: resizedisk
 

@@ -4,7 +4,7 @@
   poll: 0
   ignore_errors: false
 - name: Restart server
-  command: /sbin/shutdown -r +1
+  command: sudo /sbin/shutdown -r now
   async: 0
   poll: 0
   ignore_errors: false
