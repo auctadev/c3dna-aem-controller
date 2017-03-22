@@ -1,14 +1,14 @@
+- name: Create fdisk input parameters file
+  copy: dest={{ resizeParamsFile }} mode=0644 content="n\np\n3\n83884032\n\nt\n3\n8e\nw"
 - name: Create logical partition
-  command: 'echo -e "n\np\n3\n83884032\n\nt\n3\n8e\nw" | fdisk /dev/sda'
-  async: 0
-  poll: 0
+  shell: 'cat {{ resizeParamsFile }} | sudo fdisk /dev/sda'
   become: true
   become_user: 'root'
-  ignore_errors: false
-- name: Restart server
+  ignore_errors: true
+- name: Delete fdisk input parameters file
+  file:  path={{ resizeParamsFile }} state=absent
+- name: Reboot server
   command: /sbin/shutdown -r now
-  async: 0
-  poll: 0
   become: true
   become_user: 'root'
   ignore_errors: false

@@ -46,12 +46,12 @@
 - name: add public IP
   hosts: servers
   roles:
-- {role: addpublicip, ansible_hostname: "{{ groups.servers[0] }}", wait_addpublicip: true }
+  - {role: addpublicip, ansible_hostname: "{{ groups.servers[0] }}", wait_addpublicip: true }
 
 - name: get public IP
   hosts: servers
   roles:
-- role: getpublicip
+  - role: getpublicip
 
 - name: Resize Disk Step 1
   hosts: servers
@@ -60,12 +60,15 @@
   roles:
   - role: resizedisk
 
-- wait_for:
-    host: "{{ ansible_ssh_host }}"
-    port: 22
-    delay: 30
-    timeout: 300
-    connect_timeout: 15
+- name: wait
+  hosts: localhost
+  tasks:
+    - wait_for:
+        host: "{{ item.details.ipAddresses[0]['internal'] }}"
+        port: 22
+        delay: 5
+        timeout: 320
+      with_items: '{{ serverInfos.servers }}'
 
 - name: Resize Disk Step 2
   hosts: servers
