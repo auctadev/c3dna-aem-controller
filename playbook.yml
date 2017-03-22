@@ -54,6 +54,27 @@
 - role: getpublicip
 #var name --> publicIP
 
+- name: Resize Disk Step 1
+  hosts: servers
+  vars:
+    step: 1
+  roles:
+  - role: resizedisk
+
+- wait_for:
+    host: "{{ ansible_ssh_host }}"
+    port: 22
+    delay: 30
+    timeout: 300
+    connect_timeout: 15
+
+- name: Resize Disk Step 2
+  hosts: servers
+  vars:
+    step: 2
+  roles:
+  - role: resizedisk
+
 - name: load configuration
   hosts: servers
   roles:

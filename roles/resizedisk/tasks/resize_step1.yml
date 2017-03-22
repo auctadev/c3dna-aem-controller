@@ -1,0 +1,14 @@
+- name: Create logical partition
+  command: 'echo -e "n\np\n3\n83884032\n\nt\n3\n8e\nw" | fdisk /dev/sda'
+  async: 0
+  poll: 0
+  become: true
+  become_user: 'root'
+  ignore_errors: false
+- name: Restart server
+  command: /sbin/shutdown -r now
+  async: 0
+  poll: 0
+  become: true
+  become_user: 'root'
+  ignore_errors: false
