@@ -33,7 +33,7 @@
     ansible_winrm_server_cert_validation=ignore
     publicip={{ item.details.ipAddresses[-1]['public'] | d('') }}
   with_items: clc.servers
-   
+
 - wait_for:
     host: "{{item.ipaddress}}"
     port: 22
