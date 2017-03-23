@@ -6,7 +6,7 @@
   file: name=/work state=directory mode=0755
 
 - debug:
-    var: group
+    var: groupID
 
 - name: copy controller shell file
   template: src=configure_controller.sh dest=/work/configure_controller.sh mode=0755

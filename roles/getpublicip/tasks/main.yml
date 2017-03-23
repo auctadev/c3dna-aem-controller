@@ -5,7 +5,7 @@
     mode: 0755
 - name: get server
   raw: /tmp/apiv2 -endpoint https://api.ctl.io/v2/servers/{{lookup('env','CLC_ACCT_ALIAS')}}/{{ansible_hostname}}
-       -method GET -user '{{API_V2_USER}}' -pass '{{API_V2_PASSWORD}}'
+       -method GET -user '{{apiV2User}}' -pass '{{apiV2Passwd}}'
   register: response
 
 - set_fact:

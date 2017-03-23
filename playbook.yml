@@ -15,10 +15,10 @@
     - { sizeGB: 200, type: raw }
     srv_mem: "{{ mem | d(8) }}"
     srv_cpu: "{{ cpu | d(2) }}"
-    srv_name: "{{ server_name | d('C3DC') }}"
+    srv_name: "{{ serverName | d('C3DC') }}"
     # srv_public: true
     # srv_ports: "22, 80, 443"
-    srv_pass: "{{root_password}}"
+    srv_pass: "{{rootPasswd}}"
   roles:
   - role: server
 

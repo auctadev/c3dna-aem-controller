@@ -31,8 +31,8 @@
     msg: "response final id add public ip: {{ response.json.id.split('-')[1] }}"
 - set_fact:
     jobid: "{{ response.json.id.split('-')[1] }}"
-- raw: echo '{"LocationAlias":"{{dc}}","AccountAlias":"{{alias}}","RequestID":"{{jobid}}"}' | /tmp/apiv1 -endpoint https://api.ctl.io/REST/Blueprint/GetDeploymentStatus/JSON
-       -method POST -key '{{api_key}}' -pass '{{api_pass}}'
+- raw: echo '{"LocationAlias":"{{datacenter}}","AccountAlias":"{{alias}}","RequestID":"{{jobid}}"}' | /tmp/apiv1 -endpoint https://api.ctl.io/REST/Blueprint/GetDeploymentStatus/JSON
+       -method POST -key '{{apiV1Key}}' -pass '{{apiV1Passwd}}'
   when: "wait_addpublicip | d(false)"
   register: status
   until: "(status.stdout_lines[1]|from_json).PercentComplete == 100"

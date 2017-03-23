@@ -20,13 +20,13 @@ first_boot=true
 
 internalIP="{{ansible_ssh_host}}"
 publicIP="{{publicIP}}"
-apiV2User="{{API_V2_USER}}"
-apiV2Password="{{API_V2_PASSWORD}}"
-apiV1Key="{{api_key}}"
-apiV1Password="{{api_pass}}"
-serverGroup="{{group}}"
-serverNetwork="{{network_id}}"
-serverRootPassword="{{root_password}}"
+apiV2User="{{apiV2User}}"
+apiV2Password="{{apiV2Passwd}}"
+apiV1Key="{{apiV1Key}}"
+apiV1Password="{{apiV1Passwd}}"
+serverGroup="{{groupID}}"
+serverNetwork="{{networkID}}"
+serverRootPassword="{{rootPasswd}}"
 #controlAlias="{{ lookup('env','CLC_ACCT_ALIAS') }}"   -  unneeded
 
 #internalIP=10.73.26.46
