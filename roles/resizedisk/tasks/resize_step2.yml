@@ -1,21 +1,20 @@
 - name: Create physical volume
-  command: pvcreate /dev/sda3
-  async: 0
-  poll: 0
+  shell: pvcreate /dev/sda3
   become: true
   become_user: 'root'
   ignore_errors: false
 - name: Extend physical volume
-  command: lvextend -L+160G /dev/C3D-SCP-vg/root
-  async: 0
-  poll: 0
+  shell: vgextend C3D-SCP-vg /dev/sda3
+  become: true
+  become_user: 'root'
+  ignore_errors: false
+- name: Allocate space on volume
+  shell: lvextend -L+160G /dev/C3D-SCP-vg/root
   become: true
   become_user: 'root'
   ignore_errors: false
 - name: Resize partition
-  command: resize2fs -p /dev/C3D-SCP-vg/root
-  async: 0
-  poll: 0
+  shell: resize2fs -p /dev/C3D-SCP-vg/root
   become: true
   become_user: 'root'
   ignore_errors: false

@@ -20,6 +20,9 @@
     public_ip_ports: "{{ srv_ports | d('') }}"
   register: clc
 
+- set_fact:
+    serverInfos: "{{clc}}"
+
 - name: inventory
   add_host:
     groups=servers
@@ -40,5 +43,3 @@
     delay: 5
     timeout: 320
   with_items: clc.servers
-
-

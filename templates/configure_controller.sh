@@ -19,6 +19,7 @@ first_boot=true
 #Input
 
 internalIP="{{ansible_ssh_host}}"
+publicIP="{{publicIP}}"
 apiV2User="{{API_V2_USER}}"
 apiV2Password="{{API_V2_PASSWORD}}"
 apiV1Key="{{api_key}}"
@@ -111,6 +112,43 @@ rm /etc/resolv.conf
 ln -s /run/resolvconf/resolv.conf /etc/resolv.conf
 
 }
+
+#=========================================================================
+#The replace_line_statemachine function
+#@Usage : replace_line_statemachine "<key>" "<key> = <value>" <FILE>
+#@Example: replace_line_statemachine "DHT.enable" "DHT.enable = true" $CCC_DIR/conf/include/UI.properties
+#=========================================================================
+function replace_line_statemachine(){
+
+  KEY=$1
+  NEW_LINE=$2
+  FILE=$3
+  MODE=$4
+
+  foundentry=false
+
+  i=0
+  while read -r line || [[ -n "$line" ]]; do
+     i=$((i+1))
+     if [[ $line == *$KEY* ]]
+     then
+       sudo sed -i "$i s@.*@$NEW_LINE@" $FILE
+       foundentry=true
+     fi
+
+  done < $FILE
+
+  if [[ $foundentry == false ]]
+  then
+    if [[ $MODE == "warn" ]]
+    then
+      print_both "WARN: unable to find $KEY entry on $FILE"
+    else
+      print_both "ERROR: unable to find $KEY entry on $FILE"
+    fi
+  fi
+}
+
 
 #=========================================================================
 #The getLocationAlias function goes to get instance related Location on Century Link sending POST via API V1
@@ -333,6 +371,10 @@ do
       then
          print "ERROR: unable to execute chef-solo configuration. Check logs for details"
       fi
+
+      # Update GUI configuration file
+      #===================
+      replace_line_statemachine "defaultUIAddress" "defaultUIAddress: ['"$publicIP"']," /var/www/html/gui/cbn-aem_console_conf.js "warn"
 
       # Download AEM Requirements from VPS
       #===================
