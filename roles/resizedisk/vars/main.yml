@@ -1,2 +1,6 @@
 ---
-resizeParamsFile: "/home/cccuser/resizeDisk"
+resizeFile: "/home/cccuser/resizeDisk"
+resizeCommand: "n\np\n3\n83884032\n\nt\n3\n8e\nw"
+partition: "/dev/sda3"
+volume: "C3D-SCP-vg"
+diskSize: "160"

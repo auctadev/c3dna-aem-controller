@@ -1,5 +1,5 @@
 - name: Create fdisk input parameters file
-  copy: dest={{ resizeParamsFile }} mode=0644 content="n\np\n3\n83884032\n\nt\n3\n8e\nw"
+  copy: dest={{ resizeFile }} mode=0644 content={{ resizeCommand }}
 - name: Create logical partition
   shell: 'cat {{ resizeParamsFile }} | sudo fdisk /dev/sda'
   become: true
