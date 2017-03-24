@@ -1,9 +1,13 @@
 ---
-- name: check credentials
+- name: check specified properties
+  hosts: localhost
+  roles:
+  - role: checkproperties
+- name: check credentials v1
   hosts: localhost
   roles:
   - role: checkV1
-- name: check credentials
+- name: check credentials v2
   hosts: localhost
   roles:
   - role: checkV2
@@ -21,7 +25,6 @@
     srv_pass: "{{rootPasswd}}"
   roles:
   - role: server
-
 - name: dependencies
   hosts: servers
   gather_facts: false

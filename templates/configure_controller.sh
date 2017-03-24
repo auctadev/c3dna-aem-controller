@@ -29,15 +29,10 @@ serverNetwork="{{networkID}}"
 serverRootPassword="{{rootPasswd}}"
 #controlAlias="{{ lookup('env','CLC_ACCT_ALIAS') }}"   -  unneeded
 
-#internalIP=10.73.26.46
-#apiV2User=CDNA
-#apiV2Password=Super53!
-#apiV1Key=3bafb692aaf848cfb33f26cacbe8b52f
-#apiV1Password=Jba{~t!X#65X}?nC
-#serverGroup=17c823aa-b45c-4252-bb23-e5ebee1f9d70
-#serverNetwork=vlan_2026_10.73.26
-#serverRootPassword=cccDNA2013!
-#serverRootPassword=AU1
+#Runner Job
+platformRepoURL="https://github.com/c3dnadev/c3dna-aem-platform"
+platformRepoBranch="develop"
+platformRepoPlaybook="playbook.yml"
 
 #Vps
 VPS_LN=ctl.bp.aem.c3dna.net
@@ -326,8 +321,8 @@ function configureParamPlatfomBP(){
 
   propFile="$CCC_HOME/plugins/CloudController-V2/conf/CloudController.properties"
 
-  updateProperties "ctl.group.default" $serverGroup $propFile
   updateProperties "ctl.location.default" $locationAlias $propFile
+  updateProperties "ctl.group.default" $serverGroup $propFile
   updateProperties "ctl.network.default" $serverNetwork $propFile
 
   updateProperties "ctl.auth.v1.key" $apiV1Key $propFile
@@ -335,13 +330,13 @@ function configureParamPlatfomBP(){
   updateProperties "ctl.auth.v2.key" $apiV2User $propFile
   updateProperties "ctl.auth.v2.pwd" $apiV2Password $propFile
 
-  updateProperties "ctl.blueprint.default.ID" $platformBlueprintUUID $propFile
+  updateProperties "ctl.runner.repo.url" $platformRepoURL $propFile
+  updateProperties "ctl.runner.repo.branch" $platformRepoBranch $propFile
+  updateProperties "ctl.runner.repo.playbook" $platformRepoPlaybook $propFile
 
-  updateProperties "T3.BuildServerTask.Password" $serverRootPassword $propFile
-  updateProperties "T3.BuildServerTask.GroupID" $serverGroup $propFile
-  updateProperties "T3.BuildServerTask.Network" $serverNetwork $propFile
-
-  updateProperties "\$BLUEPRINT_ID.User_Password" $serverRootPassword $propFile
+  updateProperties "ctl.runner.server.password" $serverRootPassword $propFile
+  updateProperties "ctl.runner.server.datacenter" $locationAlias $propFile
+  updateProperties "ctl.runner.server.group" $serverGroup $propFile
 
 }
 
