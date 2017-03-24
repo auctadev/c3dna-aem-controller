@@ -245,16 +245,6 @@ function downloadRepo(){
 
     cp -r $BLUEPRINT_DIR/cookbooks/* /var/chef/cache/cookbooks | tee -a $LOGFILE
 
-    print "Get Platform blueprint UUID"
-    bpUUIDKey="platformBpUUID"
-    plfmBpUUIDEntry=$(cat $vpsConfFile | grep $bpUUIDKey)
-    platformBlueprintUUID=$(echo ${plfmBpUUIDEntry##*:})
-
-    if [ -z $platformBlueprintUUID ]
-    then
-       print "ERROR: unable to get platform blueprint UUID from $vpsConfFile. Contact C3DNA support"
-    fi
-
 }
 
 #=========================================================================
