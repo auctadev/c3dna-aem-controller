@@ -346,6 +346,7 @@ do
   then
 
       updatePlaceholder "<INTERNAL_IP>" $internalIP $CONF_FILE
+      updatePlaceholder "<PUBLIC_IP>" $publicIP $CONF_FILE
       updatePlaceholder "<CCCUSER_PASSWORD>" $CCCUSER_PASSWORD $CONF_FILE
 
       FILE_CONTENT=$(cat $CONF_FILE)
@@ -356,10 +357,6 @@ do
       then
          print "ERROR: unable to execute chef-solo configuration. Check logs for details"
       fi
-
-      # Update GUI configuration file
-      #===================
-      replace_line_statemachine "defaultUIAddress" "defaultUIAddress: ['"$publicIP"']," /var/www/html/gui/cbn-aem_console_conf.js "warn"
 
       # Download AEM Requirements from VPS
       #===================
