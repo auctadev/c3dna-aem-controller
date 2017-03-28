@@ -13,15 +13,26 @@
       Accept: 'application/json'
     body: {'internalIPAddress' :'{{ ansible_ssh_host }}',
        'ports': [
+       {'protocol':'TCP','port':22},
+       {'protocol':'TCP','port':53},
+       {'protocol':'UDP','port':53},
+       {'protocol':'TCP','port':2221},
+       {'protocol':'TCP','port':2225},
+       {'protocol':'TCP','port':2226},
+       {'protocol':'TCP','port':2227},
+       {'protocol':'TCP','port':4000},
+       {'protocol':'TCP','port':4747},
+       {'protocol':'TCP','port':47474},
+       {'protocol':'TCP','port':53306},
+       {'protocol':'TCP','port':3306},
        {'protocol':'TCP','port':80},
+       {'protocol':'TCP','port':443},
        {'protocol':'TCP','port':8080},
        {'protocol':'TCP','port':50080},
        {'protocol':'TCP','port':58080},
-       {'protocol':'TCP','port':53},
-       {'protocol':'UDP','port':53},
-       {'protocol':'TCP','port':22},
-       {'protocol':'TCP','port':443},
-       {'protocol':'TCP','port':58081}],
+       {'protocol':'TCP','port':58081}
+       {'protocol':'TCP','port':4502},
+       {'protocol':'TCP','port':4503}],
        'sourceRestrictions':[]}
     body_format: json
     status_code: 200,202,204
