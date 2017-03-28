@@ -30,7 +30,7 @@
        {'protocol':'TCP','port':8080},
        {'protocol':'TCP','port':50080},
        {'protocol':'TCP','port':58080},
-       {'protocol':'TCP','port':58081}
+       {'protocol':'TCP','port':58081},
        {'protocol':'TCP','port':4502},
        {'protocol':'TCP','port':4503}],
        'sourceRestrictions':[]}
