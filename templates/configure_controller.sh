@@ -376,26 +376,14 @@ do
 
       sleep 2
 
+      echo $CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER bash $CCC_HOME/hard.sh | tee -a $LOGFILE
+
+      sleep 1
+
       echo $CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER bash $CCC_HOME/engine.sh start | tee -a $LOGFILE
 
       if [[ $first_boot == true ]]
       then
-
-        #Add public IP Address
-        #print "Login using API v2 using $apiV2User credentials"
-        #RESPONSE=$(curl -i -H "Content-Type: application/json" -X POST -d "{'username':'$apiV2User','password':'$apiV2Password'}" https://api.ctl.io/v2/authentication/login)
-        #curl -i -H "Content-Type: application/json" -X POST -d '{"username":"CDNA","password":"Super53!"}' https://api.ctl.io/v2/authentication/login
-
-        #print "Response is: $RESPONSE"
-        #TOKEN=$(echo $RESPONSE | grep -o -P '(?<=bearerToken":").*(?=")')
-        #print "Token value is: $TOKEN"
-
-        #POST_URL="https://api.ctl.io/v2/servers/$controlAlias/$HOSTNAME/publicIPAddresses"
-        #print "Add public ip on $internalIP for $HOSTNAME sending POST to $POST_URL"
-        #RESPONSE=$(curl -i -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -X POST -d "{'internalIPAddress':'$internalIP','ports':[{'protocol':'TCP','port':80},{'protocol':'TCP','port':8080},{'protocol':'TCP','port':50080},{'protocol':'TCP','port':58080},{'protocol':'TCP','port':53},{'protocol':'UDP','port':53},{'protocol':'TCP','port':22},{'protocol':'TCP','port':443},{'protocol':'TCP','port':58081}],'sourceRestrictions':[]}" $POST_URL)
-        #curl -i -H "Content-Type: application/json" -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1cm46YXBpLXRpZXIzIiwiYXVkIjoidXJuOnRpZXIzLXVzZXJzIiwibmJmIjoxNDg3Njg3NjQzLCJleHAiOjE0ODg4OTcyNDMsInVuaXF1ZV9uYW1lIjoiQ0ROQSIsInVybjp0aWVyMzphY2NvdW50LWFsaWFzIjoiRElNRSIsInVybjp0aWVyMzpsb2NhdGlvbi1hbGlhcyI6Ik5ZMSIsInJvbGUiOiJBY2NvdW50QWRtaW4ifQ.Jwr-Uii0A55qgwCbkF1qf-NVmjPVgbj7RUUNKdXFFEs" -X POST -d "{'internalIPAddress':'10.73.26.22','ports':[{'protocol':'TCP','port':80},{'protocol':'TCP','port':8080},{'protocol':'TCP','port':50080},{'protocol':'TCP','port':58080},{'protocol':'TCP','port':53},{'protocol':'UDP','port':53},{'protocol':'TCP','port':22},{'protocol':'TCP','port':443},{'protocol':'TCP','port':58081}],'sourceRestrictions':[]}" https://api.ctl.io/v2/servers/DIME/NY1DIMEC3CTRL180/publicIPAddresses
-
-        #print "Response is: $RESPONSE"
 
         sed -i "/first_boot=.*/cfirst_boot=false" $DIR/$FILE_NAME
 
