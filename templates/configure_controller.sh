@@ -353,9 +353,10 @@ do
       print "\nFile $CONF_FILE content is:\n[\n$FILE_CONTENT\n]\n"
 
       sudo chef-solo -c $BLUEPRINT_DIR/solo.rb -j $BLUEPRINT_DIR/conf.json | tee -a $LOGFILE
-      if [[ $? != 0 ]]
+      tail -n 10 $LOGFILE  | grep "process exited unsuccessfully"
+      if [[ $? == 0 ]]
       then
-         print "ERROR: unable to execute chef-solo configuration. Check logs for details"
+         print "ERROR: unable to execute chef-solo configuration"
       fi
 
       # Download AEM Requirements from VPS
@@ -376,11 +377,11 @@ do
 
       sleep 2
 
-      echo $CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER bash $CCC_HOME/hard.sh | tee -a $LOGFILE
+      echo $CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER bash $CCC_HOME/hard.sh &>> $LOGFILE || print "ERROR unable to prepare controller"
 
       sleep 1
 
-      echo $CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER bash $CCC_HOME/engine.sh start | tee -a $LOGFILE
+      echo $CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER bash $CCC_HOME/engine.sh start &>> $LOGFILE || print "ERROR unable to engine controller"
 
       if [[ $first_boot == true ]]
       then
@@ -388,13 +389,6 @@ do
         sed -i "/first_boot=.*/cfirst_boot=false" $DIR/$FILE_NAME
 
       fi
-
-      sleep 5;
-
-      sudo rm /etc/rc1.d/S99configure_controller.sh
-      sudo rm /etc/rc2.d/S99configure_controller.sh
-      sudo rm /etc/rc3.d/S99configure_controller.sh
-      sudo rm /etc/init.d/configure_controller.sh
 
       exit 0;
 

@@ -11,16 +11,9 @@
 - name: copy controller shell file
   template: src=configure_controller.sh dest=/work/configure_controller.sh mode=0755
 
-- name: copy controller script file
-  template: src=copy_c3dna_content.sh dest=/work/copy_c3dna_content.sh mode=0755
-
 - name: run controller setup script
-  shell: "/work/copy_c3dna_content.sh"
+  shell: "/work/configure_controller.sh"
+  become: true
+  become_user: 'root'
   args:
     chdir: /work
-
-- name: Restart server
-  command: /sbin/shutdown -r +1
-  async: 0
-  poll: 0
-  ignore_errors: true

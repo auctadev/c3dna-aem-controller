@@ -1,7 +1,15 @@
-# C<sup>3</sup>DNA Controller
+C<sup>3</sup>DNA Controller for AEM Customers
+=======
+                             
+* Version: 1.0.0
+* Date: March 29<sup>th</sup>, 2017
 
 C<sup>3</sup>DNA brings end-to-end Application Lifecycle Management to
-Enterprise Private or Hybrid Clouds. 
+Enterprise Private or Hybrid Clouds. Both existing applications i.e. pets and
+new cloud-native applications i.e. cattle can be on-boarded, deployed across
+clouds and then managed via policies to provide developers and application
+owners with an application-centric visibility and dynamic policy-based real-time
+management with instant cross-cloud mobility.
 
 This runner job installs the controller component only. See also the [Platform Component][c3dna-platform].
 
