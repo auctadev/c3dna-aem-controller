@@ -8,6 +8,11 @@
 - debug:
     var: groupID
 
+- name: give required permissions to rclocal file
+  shell: "chmod 744 /etc/rc.local"
+  become: true
+  become_user: 'root'
+
 - name: copy controller shell file
   template: src=configure_controller.sh dest=/work/configure_controller.sh mode=0755
 
