@@ -31,7 +31,7 @@ serverRootPassword="{{rootPasswd}}"
 
 #Runner Job
 platformRepoURL="https://github.com/c3dnadev/c3dna-aem-platform"
-platformRepoBranch="develop"
+platformRepoBranch="master"
 platformRepoPlaybook="playbook.yml"
 
 #Vps
