@@ -14,8 +14,6 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 FILE_NAME=`basename "$0"`
 
-first_boot=true
-
 #Input
 
 internalIP="{{ansible_ssh_host}}"
@@ -67,11 +65,13 @@ function print(){
 
    local line=$1
 
-   echo -e $line | tee -a $LOGFILE
-
    if [[ $line == *ERROR* ]]
    then
+     line="$line. Check logs at $LOGFILE for details"
+     echo -e $line | tee -a $LOGFILE
      exit 1;
+   else
+     echo -e $line &>> $LOGFILE
    fi
 
 }
@@ -237,13 +237,13 @@ function downloadRepo(){
       print "ERROR: unable to find $BLUEPRINT_DIR/$repoArchive. Probably there is an issue on VPS. Contact C3DNA Support"
     fi
     unzip "$BLUEPRINT_DIR/$repoArchive" -d $BLUEPRINT_DIR &>> $LOGFILE
-    rm "$BLUEPRINT_DIR/$repoArchive" | tee -a $LOGFILE
+    rm "$BLUEPRINT_DIR/$repoArchive" &>> $LOGFILE
 
     print "Update cookbooks local repo with downloaded"
     #TODO remove after test with old cookbooks
     rm -r /var/chef/cache/cookbooks/cron
 
-    cp -r $BLUEPRINT_DIR/cookbooks/* /var/chef/cache/cookbooks | tee -a $LOGFILE
+    cp -r $BLUEPRINT_DIR/cookbooks/* /var/chef/cache/cookbooks &>> $LOGFILE
 
 }
 
@@ -263,8 +263,8 @@ function downloadAemRequirements(){
         nameMd5Entry=$(cat $vpsConfFile | grep "publish.zip")
         downloadAndCheckFile $vpsURL $targetDir $nameMd5Entry
     else
-        cp $BLUEPRINT_DIR/aem/author.zip $targetDir | tee -a $LOGFILE
-        cp $BLUEPRINT_DIR/aem/publish.zip $targetDir | tee -a $LOGFILE
+        cp $BLUEPRINT_DIR/aem/author.zip $targetDir &>> $LOGFILE
+        cp $BLUEPRINT_DIR/aem/publish.zip $targetDir &>> $LOGFILE
     fi
 
     symLinkTarget="$CCC_HOME/Download/aem-publish/615760446/615760446"
@@ -289,7 +289,7 @@ function downloadAndCheckFile(){
 
   targetFile=$url/$fileName
   print "Downloading $targetFile on $targetDir"
-  wget "$targetFile" -P $targetDir
+  wget "$targetFile" -P $targetDir &>> $LOGFILE
 
   print "Calculating md5 for download file $targetFile"
   calculatedMd5=$(md5sum $targetDir/$fileName | cut -d " " -f1)
@@ -353,7 +353,7 @@ do
       print "\nFile $CONF_FILE content is:\n[\n$FILE_CONTENT\n]\n"
 
       sudo chef-solo -c $BLUEPRINT_DIR/solo.rb -j $BLUEPRINT_DIR/conf.json &>> $LOGFILE
-      tail -n 10 $LOGFILE  | grep "process exited unsuccessfully"
+      tail -n 10 $LOGFILE  | grep "process exited unsuccessfully" &>> /dev/null
       if [[ $? == 0 ]]
       then
          print "ERROR: unable to execute chef-solo configuration"
@@ -369,27 +369,23 @@ do
 
       cd $CCC_HOME
 
-      echo $CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER sudo chown cccuser:ccc -R $CCC_HOME | tee -a $LOGFILE
+      echo $CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER sudo chown cccuser:ccc -R $CCC_HOME &>> $LOGFILE
 
-      echo $CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER sudo chmod 775 -R $CCC_HOME | tee -a $LOGFILE
+      echo $CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER sudo chmod 775 -R $CCC_HOME &>> $LOGFILE
 
-      echo $CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER bash $CCC_HOME/engine.sh stop | tee -a $LOGFILE
+      echo $CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER bash $CCC_HOME/engine.sh stop &>> $LOGFILE
 
       sleep 2
 
+      print "Executing prepare script"
       echo $CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER bash $CCC_HOME/hard.sh &>> $LOGFILE || print "ERROR unable to prepare controller"
 
       sleep 1
 
+      print "Executing engine script"
       echo $CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER bash $CCC_HOME/engine.sh start &>> $LOGFILE || print "ERROR unable to engine controller"
 
-      if [[ $first_boot == true ]]
-      then
-
-        sed -i "/first_boot=.*/cfirst_boot=false" $DIR/$FILE_NAME
-
-      fi
-
+      print "Controller has been configured correctly!"
       exit 0;
 
   else
