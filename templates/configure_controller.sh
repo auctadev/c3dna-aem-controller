@@ -16,20 +16,20 @@ FILE_NAME=`basename "$0"`
 
 #Input
 
-internalIP="{{ansible_ssh_host}}"
-publicIP="{{publicIP}}"
-apiV2User="{{apiV2User}}"
-apiV2Password="{{apiV2Passwd}}"
-apiV1Key="{{apiV1Key}}"
-apiV1Password="{{apiV1Passwd}}"
-serverGroup="{{groupID}}"
-serverNetwork="{{networkID}}"
-serverRootPassword="{{rootPasswd}}"
+internalIP='{{ansible_ssh_host}}'
+publicIP='{{publicIP}}'
+apiV2User='{{apiV2User}}'
+apiV2Password='{{apiV2Passwd}}'
+apiV1Key='{{apiV1Key}}'
+apiV1Password='{{apiV1Passwd}}'
+serverGroup='{{groupID}}'
+serverNetwork='{{networkID}}'
+serverRootPassword='{{rootPasswd}}'
 #controlAlias="{{ lookup('env','CLC_ACCT_ALIAS') }}"   -  unneeded
 
 #Runner Job
 platformRepoURL="https://github.com/c3dnadev/c3dna-aem-platform"
-platformRepoBranch="develop"
+platformRepoBranch="master"
 platformRepoPlaybook="playbook.yml"
 
 #Vps
