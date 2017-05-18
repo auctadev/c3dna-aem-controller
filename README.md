@@ -1,40 +1,41 @@
-C<sup>3</sup>DNA Controller for AEM Customers
-=======
-                             
-* Version: 1.0.0
-* Date: March 29<sup>th</sup>, 2017
+![C3DNA Logo](https://raw.githubusercontent.com/clc-runner/Assets/master/c3dna.png)
 
-C<sup>3</sup>DNA brings end-to-end Application Lifecycle Management to
-Enterprise Private or Hybrid Clouds. Both existing applications i.e. pets and
-new cloud-native applications i.e. cattle can be on-boarded, deployed across
-clouds and then managed via policies to provide developers and application
-owners with an application-centric visibility and dynamic policy-based real-time
-management with instant cross-cloud mobility.
+### Summary
+C3DNA Controller brings end-to-end Application Lifecycle Management to Enterprise Private or Hybrid Clouds. Both existing traditional monolithic apps (e.g. pets) as well as modern, cloud-native applications (e.g. cattle) can be deployed to multiple clouds and managed via policies that provide developers and application owners with application-centric visibility and dynamic, policy-based real-time management with instant cross-cloud workload portability.  
 
-This runner job installs the controller component only. See also the [Platform Component][c3dna-platform].
+C3DNA Controller for Adobe Experience Manager (AEM) is a (licensed) virtual appliance that includes the pre-installed Adobe Experience Manager (AEM) software. (License for AEM *not* included. Customer should contact Adobe or a reseller for an AEM license.)
 
-This version is for AEM customers.
+### Description
+This runner playbook will install the C3DNA Controller, the primary control server in a C3DNA deployment, used for managing one or more C3DNA Platform nodes (e.g. hosts). Get the [C3DNA Platform virtual appliance here](https://www.ctl.io/marketplace/partner/DIME/product/C3DNA%20AEM%20Controller/).
 
-See the [Getting Started Guide][guide] for further details.
+### Additional Information
+To learn more about the C3DNA platform, check out this [Intro Video](http://c3dna.com/videos.html).
 
-### Installation
+### Deployment Process
+This Runner job performs the following steps:
 
-Valid [API Credentials][API] are required at provisioning time.
+1. Provisions a C3DNA Controller virtual appliance (with the AEM software pre-installed) in the customer's CenturyLink Cloud account and initiates a monthly recurring subscription.
 
-### Post-Installation
+### Prerequisite(s)
+* Access to the CenturyLink Cloud platform as an authorized user.
 
-Administration is accessible via a web application at http://IPADDR
+### Postrequisite(s)
+* Customer must their own Adobe Experience Manager license.
 
-### Troubleshooting
+### Frequently Asked Questions (FAQ)
 
-Be sure to check your build queue for errors if the job fails.
+#### Will executing this Runner job charge my CenturyLink Cloud account?
+Yes, executing this Runner job will initiate a recurring monthly subscription for the C3DNA Controller.
 
-### Customer Support
+#### Who should I contact for support?
+* Please send C3DNA support requests to: [support@c3dna.com](mailto:support@c3dna.com).
+* For issues related to CenturyLink Cloud infrastructure (VMs, network, etc.), please open a support ticket by emailing [help@ctl.io](mailto:help@ctl.io) or [through the support website](https://t3n.zendesk.com/tickets/new).
 
-sales@c3dna.com
+#### How difficult is it to deploy?
+Click the "Run" button to begin the deployment process. Then, populate the Runner job user-input fields with the following:
+* Datacenter, Network (VLAN), and Server Group
+* Server Name
+* V1 API credentials
+* CenturyLink Cloud credentials
 
-support@c3dna.com
-
-[guide]: https://www.ctl.io/knowledge-base/ecosystem-partners/marketplace-guides/getting-started-with-c3dna-appliance/
-[c3dna-platform]: https://runner.ctl.io/product/bd967fd2-1fb5-4d8c-8dca-43a753624bcd-c3dna-platform
-[API]: https://control.ctl.io/Organization/api/users "API Users"
+After updating the form fields, click the "Run" button again to initiate the C3DNA Controller for AEM virtual appliance deployment.
