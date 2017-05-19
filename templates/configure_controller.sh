@@ -42,13 +42,14 @@ wget $vpsURL/$vpsConfFile -P .
 
 #User
 OWNER=cccuser
-CCCUSER_PASSWORD=cccDNA2013!
+DEFAULT_CCCUSER_PASSWORD=cccDNA2013!
+NEW_CCCUSER_PASSWORD=$serverRootPassword
 USER_HOME=/home/$OWNER
 
 #Software
 CCC_HOME=$USER_HOME/ccc
 BLUEPRINT_DIR=$USER_HOME/blueprint_c3dna_ext/
-echo $CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER mkdir -p $BLUEPRINT_DIR
+echo $DEFAULT_CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER mkdir -p $BLUEPRINT_DIR
 
 LOGFILE=$BLUEPRINT_DIR/ctl_configure.log
 CONF_FILE=$BLUEPRINT_DIR/conf.json
@@ -195,8 +196,8 @@ function updatePlaceholder(){
     local value=$2
     local file=$3
 
-    print "#### Updating [$parameter] with value [$value] on file [$file] ( owner: $OWNER - password: $CCCUSER_PASSWORD ) "
-    echo $CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER sed -i "s/$parameter/$value/g" $file &>> $LOGFILE
+    print "#### Updating [$parameter] with value [$value] on file [$file] ( owner: $OWNER - password: $DEFAULT_CCCUSER_PASSWORD ) "
+    echo $DEFAULT_CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER sed -i "s/$parameter/$value/g" $file &>> $LOGFILE
     if [[ $? != 0 ]]
     then
       print "ERROR: unable to update $parameter on $file with value $value"
@@ -269,7 +270,7 @@ function downloadAemRequirements(){
 
     symLinkTarget="$CCC_HOME/Download/aem-publish/615760446/615760446"
     print "Create symbolic link of $publish.zip on $symLinkTarget"
-    echo $CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER mkdir -p $symLinkTarget
+    echo $NEW_CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER mkdir -p $symLinkTarget
 
     ln -s "$targetDir/publish.zip" "$symLinkTarget/publish.zip"
 
@@ -336,7 +337,7 @@ function configureParamPlatfomBP(){
 function configureController(){
 
 timestamp
-print "#######\n Configure Controller \n#######\ninternalIP=$internalIP\ncccuserPassword=$CCCUSER_PASSWORD\nExecuted by: $USER_NAME\nCurrent Path: $USER_PATH\nTimestamp: $TIMESTAMP\nHome dir Content=\n[\n$CONTENT\n]\n" > $LOGFILE
+print "#######\n Configure Controller \n#######\ninternalIP=$internalIP\ncccuserPassword=$DEFAULT_CCCUSER_PASSWORD\nExecuted by: $USER_NAME\nCurrent Path: $USER_PATH\nTimestamp: $TIMESTAMP\nHome dir Content=\n[\n$CONTENT\n]\n" > $LOGFILE
 
 for i in $(seq 1 5);
 do
@@ -347,7 +348,7 @@ do
 
       updatePlaceholder "<INTERNAL_IP>" $internalIP $CONF_FILE
       updatePlaceholder "<PUBLIC_IP>" $publicIP $CONF_FILE
-      updatePlaceholder "<CCCUSER_PASSWORD>" $CCCUSER_PASSWORD $CONF_FILE
+      updatePlaceholder "<CCCUSER_PASSWORD>" $NEW_CCCUSER_PASSWORD $CONF_FILE
 
       FILE_CONTENT=$(cat $CONF_FILE)
       print "\nFile $CONF_FILE content is:\n[\n$FILE_CONTENT\n]\n"
@@ -359,6 +360,10 @@ do
          print "ERROR: unable to execute chef-solo configuration"
       fi
 
+      #====
+      #NOTE: after this step the 'cccuser' password is equals to $NEW_CCCUSER_PASSWORD
+      #====
+
       # Download AEM Requirements from VPS
       #===================
       downloadAemRequirements "remote"
@@ -369,21 +374,21 @@ do
 
       cd $CCC_HOME
 
-      echo $CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER sudo chown cccuser:ccc -R $CCC_HOME &>> $LOGFILE
+      echo $NEW_CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER sudo chown cccuser:ccc -R $CCC_HOME &>> $LOGFILE
 
-      echo $CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER sudo chmod 775 -R $CCC_HOME &>> $LOGFILE
+      echo $NEW_CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER sudo chmod 775 -R $CCC_HOME &>> $LOGFILE
 
-      echo $CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER bash $CCC_HOME/engine.sh stop &>> $LOGFILE
+      echo $NEW_CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER bash $CCC_HOME/engine.sh stop &>> $LOGFILE
 
       sleep 2
 
       print "Executing prepare script"
-      echo $CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER bash $CCC_HOME/hard.sh &>> $LOGFILE || print "ERROR unable to prepare controller"
+      echo $NEW_CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER bash $CCC_HOME/hard.sh &>> $LOGFILE || print "ERROR unable to prepare controller"
 
       sleep 1
 
       print "Executing engine script"
-      echo $CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER bash $CCC_HOME/engine.sh start &>> $LOGFILE || print "ERROR unable to engine controller"
+      echo $NEW_CCCUSER_PASSWORD | sudo -Sp "" -u $OWNER bash $CCC_HOME/engine.sh start &>> $LOGFILE || print "ERROR unable to engine controller"
 
       print "Controller has been configured correctly!"
       exit 0;

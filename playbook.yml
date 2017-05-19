@@ -4,10 +4,10 @@
   roles:
   - role: checkproperties
 
- - name: check credentials v1
-   hosts: localhost
-   roles:
-   - role: checkV1
+- name: check credentials v1
+  hosts: localhost
+  roles:
+  - role: checkV1
 
 - name: check credentials v2
   hosts: localhost
